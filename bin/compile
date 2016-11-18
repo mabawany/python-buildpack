@@ -145,6 +145,16 @@ export PKG_CONFIG_PATH=/app/.heroku/vendor/lib/pkg-config:$BUILD_DIR/.heroku/ven
 # Switch to the repo's context.
 cd $BUILD_DIR
 
+# Clone the static build of ffmped binaries from github
+FFMPEG_BINARY="https://github.com/integricho/ffmpeg1.2-static-with-codecs.git"
+VENDOR_FOLDER="$BUILD_DIR/.heroku/vendor/ffmpeg"
+puts-step "ffmpeg will be cloned into $VENDOR_FOLDER"
+
+mkdir -p $VENDOR_FOLDER &> /dev/null
+git clone $FFMPEG_BINARY $VENDOR_FOLDER &> /dev/null
+puts-step "Cloning pre-built ffmpeg repository..."
+
+
 # Warn for lack of Procfile.
 if [[ ! -f Procfile ]]; then
   puts-warn 'Warning: Your application is missing a Procfile. This file tells Cloud Foundry how to run your application.'
